@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#16213e" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <title>Brain Capture</title>
+  <link rel="manifest" href="/manifest.json" />
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+  <div id="app">
+
+    <!-- Status bar (shared across views) -->
+    <div id="status" class="status hidden"></div>
+
+    <!-- ── SETUP VIEW: enter Google client ID ── -->
+    <div id="view-setup" class="hidden">
+      <div class="card">
+        <h2>Setup Brain Capture</h2>
+        <form id="setup-form">
+          <div class="field">
+            <label for="client-id-input">Google OAuth Client ID</label>
+            <input
+              id="client-id-input"
+              type="text"
+              placeholder="123456789-abc...apps.googleusercontent.com"
+              autocomplete="off"
+              autocorrect="off"
+              spellcheck="false"
+            />
+            <p class="hint">
+              Create this at <code>console.cloud.google.com</code> →
+              APIs &amp; Services → Credentials → OAuth 2.0 Client ID (Web application).
+              Add <code id="origin-hint"></code> as an authorized JS origin and redirect URI.
+            </p>
+          </div>
+          <button type="submit" class="btn-primary">Save &amp; Continue</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- ── LOGIN VIEW ── -->
+    <div id="view-login" class="hidden">
+      <div class="logo">🧠</div>
+      <h2>Brain Capture</h2>
+      <p>Sign in with Google to save notes to your Drive /Brain/inbox/</p>
+      <button id="btn-login" class="btn-primary" style="width: auto; padding: 14px 32px;">
+        Sign in with Google
+      </button>
+    </div>
+
+    <!-- ── CAPTURE VIEW: review & save shared content ── -->
+    <div id="view-capture" class="hidden">
+      <header>
+        <h1>🧠 Save to Brain</h1>
+      </header>
+
+      <div class="field">
+        <label for="capture-title">Title</label>
+        <input id="capture-title" type="text" placeholder="Optional title…" />
+      </div>
+
+      <div class="field">
+        <label for="capture-text">Content</label>
+        <textarea id="capture-text" placeholder="Shared text…" rows="5"></textarea>
+      </div>
+
+      <div class="field">
+        <label for="capture-url">URL</label>
+        <input id="capture-url" type="url" placeholder="https://…" />
+      </div>
+
+      <div class="field">
+        <label for="capture-note">Your Notes</label>
+        <textarea id="capture-note" placeholder="Add context, thoughts…" rows="3"></textarea>
+      </div>
+
+      <details id="preview-wrap">
+        <summary>Preview .md file</summary>
+        <pre id="preview"></pre>
+      </details>
+
+      <div class="btn-row">
+        <button id="btn-save" class="btn-primary">Save to Brain</button>
+        <button id="btn-discard" class="btn-secondary">Discard</button>
+      </div>
+    </div>
+
+    <!-- ── DASHBOARD VIEW ── -->
+    <div id="view-dashboard" class="hidden">
+      <header>
+        <h1>🧠 Brain Inbox</h1>
+        <button id="btn-new" class="btn-secondary" style="padding: 8px 14px; font-size: 0.85rem;">+ New</button>
+        <button id="btn-logout" class="btn-ghost">Sign out</button>
+      </header>
+
+      <div class="card">
+        <h2>Recent captures</h2>
+        <ul id="recent-files">
+          <li class="loading">Loading…</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    // Show origin for setup hint
+    document.getElementById('origin-hint').textContent = window.location.origin;
+  </script>
+  <script type="module" src="/app.js"></script>
+</body>
+</html>
